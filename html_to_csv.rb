@@ -26,6 +26,7 @@ CSV.open( file, 'w' ) do |head|
   head << header.split(',')
 end
 
+# Sorce file has different css class in nt and ot.
 if book_belongs_to == "nt"
   table_data_calss         = 'table[class="tablefloat"]'
   verse_nbr_table_class    = 'span[class="reftop3"]'
@@ -52,10 +53,8 @@ Dir.glob("**/**/*.htm") do |file_name|
 	document = Nokogiri::HTML(file_data) # Read file content
   book_name = File.dirname(file_name).split('/').last
   
-  extn = File.extname  file_name
+  extn = File.extname file_name
   chapter_name = File.basename file_name, extn
-
-  puts table_data_calss
 
 	# Parsing file content
 	document.at('div[class="chap"]').search(table_data_calss).each do |row|
