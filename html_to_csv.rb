@@ -13,6 +13,8 @@ class ProcessingIcon
   end
 end
 
+book_belongs_to = ARGV[0]
+
 verse_data = {}
 data = []
 temp_data = []
@@ -22,6 +24,24 @@ file = "interlinear.csv"
 
 CSV.open( file, 'w' ) do |head|
   head << header.split(',')
+end
+
+if book_belongs_to == "nt"
+  table_data_calss         = 'table[class="tablefloat"]'
+  verse_nbr_table_class    = 'span[class="reftop3"]'
+  strong_number_span_class = 'span[class="pos"]'
+  greek_eng_span_class     = 'span[class="translit"]'
+  greek_span_class         = 'span[class="greek"]'
+  eng_word_span_class      = 'span[class="eng"]'
+  word_type_span_class     = 'span[class="strongsnt"]'
+elsif book_belongs_to == "ot"
+  table_data_calss         = 'table[class="tablefloatheb"]'
+  verse_nbr_table_class    = 'span[class="refheb"]'
+  strong_number_span_class = 'span[class="strongs"]'
+  greek_eng_span_class     = 'span[class="translit"]'
+  greek_span_class         = 'span[class="hebrew"]'
+  eng_word_span_class      = 'span[class="eng"]'
+  word_type_span_class     = 'span[class="strongsnt"]'
 end
 
 count = 0
@@ -35,16 +55,18 @@ Dir.glob("**/**/*.htm") do |file_name|
   extn = File.extname  file_name
   chapter_name = File.basename file_name, extn
 
+  puts table_data_calss
+
 	# Parsing file content
-	document.at('div[class="chap"]').search('table[class="tablefloat"]').each do |row|
+	document.at('div[class="chap"]').search(table_data_calss).each do |row|
   	actual_data = row.search('td')
 
-  	verse_nbr     = actual_data.search('span[class="reftop3"]').text
-  	strong_number = actual_data.search('span[class="pos"]').text
-  	greek_eng     = actual_data.search('span[class="translit"]').text
-  	greek         = actual_data.search('span[class="greek"]').text
-  	eng_word      = actual_data.search('span[class="eng"]').text
-  	word_type     = actual_data.search('span[class="strongsnt"]').text
+  	verse_nbr     = actual_data.search(verse_nbr_table_class).text
+  	strong_number = actual_data.search(strong_number_span_class).text
+  	greek_eng     = actual_data.search(greek_eng_span_class).text
+  	greek         = actual_data.search(greek_span_class).text
+  	eng_word      = actual_data.search(eng_word_span_class).text
+  	word_type     = actual_data.search(word_type_span_class).text
     verse_number  = verse_nbr.gsub(/[[:space:]]/, '')
 
     if(verse_number == check_verse or verse_number == "")
