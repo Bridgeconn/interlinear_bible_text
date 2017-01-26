@@ -47,6 +47,7 @@ end
 
 count = 0
 Dir.glob("**/**/*.htm") do |file_name|
+  data=[]
   ProcessingIcon.new.spin_it count += 1
   check_verse = "1"
 	file_data = File.open(file_name, "r:utf-8").read # Read file
@@ -82,8 +83,11 @@ Dir.glob("**/**/*.htm") do |file_name|
       data = []
       check_verse = verse_number
     end
-
 	end
+  if(data.size > 0)
+      verse_data[check_verse] = data
+      data = []
+  end
 
   CSV.open( file, 'a' ) do |writer|
     verse_data.each do |verse_number, linear_array|
@@ -91,6 +95,7 @@ Dir.glob("**/**/*.htm") do |file_name|
         writer << [book_name, chapter_name, verse_number, linear_data["strong_number"], linear_data["greek_eng"], linear_data["greek"], linear_data["eng_word"], linear_data["word_type"] ]
       end
     end
+    verse_data = {}
   end
 
 end
