@@ -61,13 +61,24 @@ Dir.glob("**/**/*.htm") do |file_name|
 	document.at('div[class="chap"]').search(table_data_calss).each do |row|
   	actual_data = row.search('td')
 
+    # Require data from source
   	verse_nbr     = actual_data.search(verse_nbr_table_class).text
-  	strong_number = actual_data.search(strong_number_span_class).text
-  	greek_eng     = actual_data.search(greek_eng_span_class).text
-  	greek         = actual_data.search(greek_span_class).text
-  	eng_word      = actual_data.search(eng_word_span_class).text
-  	word_type     = actual_data.search(word_type_span_class).text
+  	strng_nbr     = actual_data.search(strong_number_span_class).text
+  	grk_eng       = actual_data.search(greek_eng_span_class).text
+  	grk           = actual_data.search(greek_span_class).text
+  	eg_wrd        = actual_data.search(eng_word_span_class).text
+  	wrd_typ       = actual_data.search(word_type_span_class).text
+
+    # Final and clean data from source
     verse_number  = verse_nbr.gsub(/[[:space:]]/, '')
+    
+    str_nbr       = strng_nbr.gsub(/\[.*\]/, "")
+    strong_number = str_nbr.gsub(/[[:space:]]/, '')
+
+    greek_eng     = grk_eng.gsub(/[[:space:]]/, '')
+    greek         = grk.gsub(/[[:space:]]/, '')
+    eng_word      = eg_wrd.gsub(/[[:space:]]/, '')
+    word_type     = wrd_typ.gsub(/[[:space:]]/, '')
 
     if(verse_number == check_verse or verse_number == "")
       if(temp_data.size > 0)
