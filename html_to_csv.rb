@@ -13,7 +13,8 @@ class ProcessingIcon
   end
 end
 
-book_belongs_to = ARGV[0]
+user_parameter = ARGV[0]
+book_belongs_to = user_parameter.downcase!
 
 verse_data = {}
 data = []
@@ -62,23 +63,20 @@ Dir.glob("**/**/*.htm") do |file_name|
   	actual_data = row.search('td')
 
     # Require data from source
-  	verse_nbr     = actual_data.search(verse_nbr_table_class).text
-  	strng_nbr     = actual_data.search(strong_number_span_class).text
-  	grk_eng       = actual_data.search(greek_eng_span_class).text
-  	grk           = actual_data.search(greek_span_class).text
-  	eg_wrd        = actual_data.search(eng_word_span_class).text
-  	wrd_typ       = actual_data.search(word_type_span_class).text
+  	original_verse_number   = actual_data.search(verse_nbr_table_class).text
+  	original_strong_number  = actual_data.search(strong_number_span_class).text
+  	greek_eng               = actual_data.search(greek_eng_span_class).text
+  	greek                   = actual_data.search(greek_span_class).text
+  	eng_word                = actual_data.search(eng_word_span_class).text
+  	original_word_type      = actual_data.search(word_type_span_class).text
 
     # Final and clean data from source
-    verse_number  = verse_nbr.gsub(/[[:space:]]/, '')
+    verse_number  = original_verse_number.gsub(/[[:space:]]/, '')
     
-    str_nbr       = strng_nbr.gsub(/\[.*\]/, "")
-    strong_number = str_nbr.gsub(/[[:space:]]/, '')
+    escape_bracket_strong_number = original_strong_number.gsub(/\[.*\]/, "")
+    strong_number                = escape_bracket_strong_number.gsub(/[[:space:]]/, '')
 
-    greek_eng     = grk_eng.gsub(/[[:space:]]/, '')
-    greek         = grk.gsub(/[[:space:]]/, '')
-    eng_word      = eg_wrd.gsub(/[[:space:]]/, '')
-    word_type     = wrd_typ.gsub(/[[:space:]]/, '')
+    word_type     = original_word_type.gsub(/\[.*\]/, "")
 
     if(verse_number == check_verse or verse_number == "")
       if(temp_data.size > 0)
