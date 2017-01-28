@@ -14,7 +14,7 @@ class ProcessingIcon
 end
 
 user_parameter = ARGV[0]
-book_belongs_to = user_parameter.downcase!
+book_belongs_to = user_parameter.downcase
 
 verse_data = {}
 data = []
