@@ -2,6 +2,7 @@
 
 require 'nokogiri'
 require 'csv'
+require 'json'
 
 class ProcessingIcon
   def spin_it(times)
@@ -21,6 +22,8 @@ temp_data = []
 
 header = "Book Name, Chapter, Verse, Strong Number, Greek Eng, Greek, Eng Word, Word Type"
 file = "interlinear.csv"
+
+file01 = "interlinear.json"
 
 CSV.open( file, 'w' ) do |head|
   head << header.split(',')
@@ -100,19 +103,26 @@ Dir.glob("**/**/*.htm") do |file_name|
       data = []
   end
 
-  # puts verse_data
+  # puts verse_data.to_json
 
-  CSV.open( file, 'a' ) do |writer|
-    verse_data.each do |verse_number, linear_array|
-      linear_array.each do |linear_data|
-        puts "#############        greek          ############"
-        puts linear_data["greek"]
-        puts "###########         eng_word        ##############"
-        puts linear_data["eng_word"]
-        writer << [book_name, chapter_name, verse_number, linear_data["strong_number"], linear_data["greek_eng"], linear_data["greek"], linear_data["eng_word"], linear_data["word_type"] ]
-      end
-    end
-    verse_data = {}
-  end
+  # CSV.open( file, 'a' ) do |writer|
+  #   verse_data.each do |verse_number, linear_array|
+  #     linear_array.each do |linear_data|
+  #       # puts "#############        greek          ############"
+  #       # puts linear_data["greek"]
+  #       # puts "###########         eng_word        ##############"
+  #       # puts linear_data["eng_word"]
+  #       writer << [book_name, chapter_name, verse_number, linear_data["strong_number"], linear_data["greek_eng"], linear_data["greek"], linear_data["eng_word"], linear_data["word_type"] ]
+       
+  #     end
+  #   end
+  #   verse_data = {}
+  # end
+
+  output = File.open(file01, 'w')
+  output << verse_data.to_json
+
+
 
 end
+verse_data = {}
