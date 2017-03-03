@@ -75,10 +75,10 @@ Dir.glob("**/**/*.htm") do |file_name|
     str_nbr       = strng_nbr.gsub(/\[.*\]/, "")
     strong_number = str_nbr.gsub(/[[:space:]]/, '')
 
-    greek_eng     = grk_eng.gsub(/[[:space:]]/, '')
-    greek         = grk.gsub(/[[:space:]]/, '')
-    eng_word      = eg_wrd.gsub(/[[:space:]]/, '')
-    word_type     = wrd_typ.gsub(/[[:space:]]/, '')
+    greek_eng     = grk_eng #.gsub(/[[:space:]]/, '')
+    greek         = grk #.gsub(/[[:space:]]/, '')
+    eng_word      = eg_wrd #.gsub(/[[:space:]]/, '')
+    word_type     = wrd_typ #.gsub(/[[:space:]]/, '')
 
     if(verse_number == check_verse or verse_number == "")
       if(temp_data.size > 0)
@@ -100,9 +100,15 @@ Dir.glob("**/**/*.htm") do |file_name|
       data = []
   end
 
+  # puts verse_data
+
   CSV.open( file, 'a' ) do |writer|
     verse_data.each do |verse_number, linear_array|
       linear_array.each do |linear_data|
+        puts "#############        greek          ############"
+        puts linear_data["greek"]
+        puts "###########         eng_word        ##############"
+        puts linear_data["eng_word"]
         writer << [book_name, chapter_name, verse_number, linear_data["strong_number"], linear_data["greek_eng"], linear_data["greek"], linear_data["eng_word"], linear_data["word_type"] ]
       end
     end
